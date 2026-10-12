@@ -4,9 +4,12 @@
 [![License](https://img.shields.io/github/license/paulakarhi/FrameHeat)](LICENSE)
 
 A small, free FPS counter and hardware monitor for Windows 11. It shows the temperature and load of the CPU,
-graphics card, video memory, RAM and every disk, together with the frame rate of the game you are playing, in a panel
-that stays on top of games and other windows. A reading turns yellow as the temperature nears its limit and pulses
-red once the limit is passed.
+graphics card, video memory, RAM and every disk, together with the frame rate of the game you are playing and,
+if you like, the speed and the delay of your network connection, in a panel that stays on top of games and other
+windows. A reading turns yellow as the temperature nears its limit and pulses red once the limit is passed.
+
+**[Download the latest release](https://github.com/paulakarhi/FrameHeat/releases/latest)** for Windows 11, 64-bit.
+How to install it is described under [Installing](#installing).
 
 <img src="docs/images/demo.gif" alt="The widget in demo mode: the readings climb through the yellow and red alert levels while the frame rate changes" width="820">
 
@@ -30,6 +33,10 @@ The compact design, and a text row per device laid out vertically:
 
 <img src="docs/images/widget-text-row.png" alt="The widget as one line of text per device" width="210">
 
+Without the boxes and the background only the readings are left. An alert still colors the reading itself.
+
+<img src="docs/images/widget-no-boxes.png" alt="The widget without boxes or background: only the gauges and numbers, with a yellow CPU and RAM and a red GPU and disk" width="820">
+
 The settings window: the look, which tiles to show and where, and the alert limits.
 
 <img src="docs/images/settings-look.png" alt="Settings for the look of the widget" width="270">
@@ -43,6 +50,10 @@ The settings window: the look, which tiles to show and where, and the alert limi
 - Frame rate (FPS) of the program in the foreground, with the time between frames, the one percent low and the
   refresh rate of the monitor. It is read from Windows' own event tracing, the source PresentMon uses, so nothing
   is injected into the game.
+- Network speed (download and upload, in bits or bytes per second, in the unit that suits the speed: 40 kbit/s,
+  15 Mbit/s, 1.2 Gbit/s) with the highest download seen so far, and ping (the delay to an address you choose, with
+  the average and the share of lost messages). Both tiles are off until you switch them on. The speed comes from
+  the counters Windows keeps, and the ping is the only thing in the program that uses the network (see Privacy).
 - Three designs: ring gauges (the ring fills as the temperature approaches the red limit), compact (large number and
   bar) and a text row (one line per device)
 - Yellow and red alerts. Disks and memory report their own limit, and the red alert starts there with yellow 8 °C
@@ -54,9 +65,10 @@ The settings window: the look, which tiles to show and where, and the alert limi
   behavior off, so the widget becomes an ordinary window that a game in front of it hides.
 - Stays on screen while dragged; changing the layout or size keeps the widget attached to the screen edge it was closest to
 - Look: horizontal or vertical, size, text size, panel style and opacity, widget opacity, corner roundness, space
-  between tiles, accent color (a choice of six or any color), own colors for the yellow and red alerts, labels and
-  usage on or off, snap to a corner or drag anywhere
-- Choose which tiles to show, in which order, and which disks
+  between tiles, a box around each tile on or off (without it the reading itself turns yellow or red), accent color
+  (a choice of six or any color), own colors for the yellow and red alerts, labels and usage on or off, snap to a
+  corner or drag anywhere
+- Choose which tiles to show, in which order, and which disks, and which address the ping measures
 - Hotkeys that also work in games: **Ctrl+Alt+F9** show/hide, **Ctrl+Alt+F10** move mode, **Ctrl+Alt+F11** switch
   layout, **Ctrl+Alt+F12** settings. On some keyboards the hotkeys work as they are; on others **Fn** has to be held as
   well (for example Ctrl+Alt+Fn+F9), or Fn Lock switched on.
@@ -132,11 +144,11 @@ Settings are stored in `%APPDATA%\FrameHeat\settings.json`; the log and the diag
 ```
 src/FrameHeat.Core     Platform-neutral logic, no Windows dependencies
   Alerts/              limits, defaults, limit resolution, hysteresis
-  Metrics/             readings, snapshots, frame rate figures, temperature units
+  Metrics/             readings, snapshots, frame rate, network speed and ping figures, units
   Settings/            settings model and its JSON store
   Localization/        string lookup and one table per language
 src/FrameHeat          Windows application (WPF)
-  Sensors/             reading the sensor library, the frame rate, choosing sensors, diagnostics, demo data
+  Sensors/             reading the sensor library, the frame rate, the network, choosing sensors, diagnostics, demo data
   ViewModels/          what a tile and the widget show
   Views/, Themes/      windows, controls and styles
   Hosting/, Commands/  wiring, and what the tray and settings window can ask for
@@ -161,8 +173,11 @@ new user interface, not new core logic.
   process, that process can run code as an administrator at the next logon. Moving the program after enabling
   start-up with Windows breaks the task; toggle the setting off and on to recreate it.
 - **Frame rate.** It is measured for the program in the foreground and works for programs that present their frames
-  through DXGI, which includes DirectX 10, 11 and 12 games. Vulkan and OpenGL games have not been tried. The tile
-  shows a dash while the foreground program is not drawing frames.
+  through DXGI, which includes DirectX 10, 11 and 12 games. It has been tried with Fortnite; Vulkan and OpenGL games
+  have not been tried. Windows delivers the frame information about two seconds late, so the figure follows the game
+  with that delay. The tile shows a dash while the foreground program is not drawing frames.
+- **Network speed and ping.** The speed is that of the connection with the most traffic. The ping uses ICMP echo
+  messages, which some networks block; it then shows a dash and the messages count as lost.
 - **Exclusive fullscreen.** An ordinary window does not show over old games in true exclusive fullscreen. Borderless
   windows and the Windows 11 fullscreen optimizations work. Injection-based overlays are deliberately not used,
   because they interfere with anti-cheat.
@@ -175,7 +190,11 @@ new user interface, not new core logic.
 
 ## Privacy
 
-FrameHeat does not collect or send any data about you or your computer, and it makes no network connections.
+FrameHeat does not collect or send any data about you or your computer. It makes no network connections, with one
+exception that is off until you switch it on: the ping tile sends a small test message (an ICMP echo request) once a
+second to the address you choose, 1.1.1.1 by default, and measures how long the answer takes. The message carries
+no information about you or your computer. A host name instead of an address makes the program look the name up
+through your DNS server. The network speed needs no connection: it is read from the counters Windows keeps.
 
 What stays on the computer:
 

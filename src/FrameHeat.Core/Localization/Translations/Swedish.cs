@@ -40,6 +40,7 @@ internal static class Swedish
         ["look_disk_activity"] = "Aktivitet (hur upptagen den är)",
         ["look_accent"] = "Accentfärg",
         ["look_opacity_hint"] = "Bakgrundens opacitet styr glasbakgrunden eller, när det inte finns någon bakgrund, rutornas egen bakgrund. Den heltäckande bakgrunden är alltid helt ogenomskinlig.",
+        ["look_show_boxes"] = "Visa en ram runt varje ruta",
         ["look_show_labels"] = "Visa etiketter och ikoner",
         ["look_show_usage"] = "Visa användningsprocent och staplar",
 
@@ -133,5 +134,15 @@ internal static class Swedish
         ["show_disks_off_hint"] = "Slå på Diskar ovan för att välja vilka diskar som visas.",
         ["status_fps_ok"] = "Bildfrekvens (FPS): tillgänglig ✓",
         ["status_fps_missing"] = "Bildfrekvens (FPS): inte tillgänglig. Den kräver administratörsbehörighet.",
+        ["show_net"] = "Nätverkshastighet",
+        ["show_ping"] = "Ping (fördröjning till en adress)",
+        ["show_ping_hint"] = "Ping skickar ett litet testmeddelande en gång i sekunden till adressen ovan. Den gör ingenting förrän Ping-rutan är påslagen.",
+        ["show_ping_address"] = "Pingadress",
+        ["look_speed"] = "Hastighetsenhet",
+        ["look_speed_mbit"] = "Bit per sekund (Mbit/s)",
+        ["look_speed_mbyte"] = "Byte per sekund (MB/s)",
+        ["ping_loss"] = "Förlorat",
+        ["ping_average"] = "Medel",
+        ["net_peak"] = "Högst",
     };
 }

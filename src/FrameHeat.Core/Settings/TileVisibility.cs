@@ -16,6 +16,8 @@ public sealed class TileVisibility : ObservableObject
     private bool _memory = true;
     private bool _disks = true;
     private bool _fps = true;
+    private bool _network;
+    private bool _ping;
     private MetricKind[] _order = [.. DefaultOrder];
     private string[] _hiddenDisks = [];
 
@@ -25,6 +27,12 @@ public sealed class TileVisibility : ObservableObject
     public bool Memory { get => _memory; set => Set(ref _memory, value); }
     public bool Disks { get => _disks; set => Set(ref _disks, value); }
     public bool Fps { get => _fps; set => Set(ref _fps, value); }
+
+    /// <summary>Off until the user asks for it, so a widget that was set up earlier does not change by itself.</summary>
+    public bool Network { get => _network; set => Set(ref _network, value); }
+
+    /// <summary>Off until the user asks for it: a ping sends a message over the network.</summary>
+    public bool Ping { get => _ping; set => Set(ref _ping, value); }
 
     /// <summary>The kinds of tile from first to last. Every kind appears exactly once; a saved order is repaired on load.</summary>
     public MetricKind[] Order { get => _order; set => Set(ref _order, Normalize(value)); }
@@ -39,7 +47,10 @@ public sealed class TileVisibility : ObservableObject
         MetricKind.Vram => Vram,
         MetricKind.Memory => Memory,
         MetricKind.Disk => Disks,
-        _ => Fps,
+        MetricKind.Fps => Fps,
+        MetricKind.Network => Network,
+        MetricKind.Ping => Ping,
+        _ => false,
     };
 
     public bool IsVisible(MetricReading reading)
@@ -54,7 +65,9 @@ public sealed class TileVisibility : ObservableObject
             case MetricKind.Vram: Vram = visible; break;
             case MetricKind.Memory: Memory = visible; break;
             case MetricKind.Disk: Disks = visible; break;
-            default: Fps = visible; break;
+            case MetricKind.Fps: Fps = visible; break;
+            case MetricKind.Network: Network = visible; break;
+            case MetricKind.Ping: Ping = visible; break;
         }
     }
 

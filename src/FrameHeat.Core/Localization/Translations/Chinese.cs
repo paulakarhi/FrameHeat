@@ -40,6 +40,7 @@ internal static class Chinese
         ["look_disk_activity"] = "活动（繁忙程度）",
         ["look_accent"] = "强调色",
         ["look_opacity_hint"] = "不透明度用于调整玻璃背景；没有背景时，则调整磁贴自身的背景。纯色背景始终完全不透明。",
+        ["look_show_boxes"] = "在每个磁贴周围显示边框",
         ["look_show_labels"] = "显示标签和图标",
         ["look_show_usage"] = "显示使用百分比和进度条",
 
@@ -133,5 +134,15 @@ internal static class Chinese
         ["show_disks_off_hint"] = "请先开启上方的“磁盘”，再选择要显示的磁盘。",
         ["status_fps_ok"] = "帧率 (FPS)：可用 ✓",
         ["status_fps_missing"] = "帧率 (FPS)：不可用，需要管理员权限。",
+        ["show_net"] = "网络速度",
+        ["show_ping"] = "Ping（到某个地址的延迟）",
+        ["show_ping_hint"] = "Ping 每秒向上方的地址发送一条小型测试消息。在开启 Ping 磁贴之前，它不会执行任何操作。",
+        ["show_ping_address"] = "Ping 地址",
+        ["look_speed"] = "速度单位",
+        ["look_speed_mbit"] = "每秒比特 (Mbit/s)",
+        ["look_speed_mbyte"] = "每秒字节 (MB/s)",
+        ["ping_loss"] = "丢失",
+        ["ping_average"] = "平均",
+        ["net_peak"] = "最高",
     };
 }

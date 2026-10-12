@@ -10,6 +10,8 @@ internal static class DemoData
     private const double LoadPeriodSeconds = 11;
     private const double FrameRatePeriodSeconds = 14;
     private const double DefaultRefreshRateHz = 144;
+    private const double BytesPerMegabit = 1_000_000 / 8.0;
+    private const double FastestDownloadMegabits = 300;
 
     /// <summary>
     /// The fake readings for a moment in the demo; every device is at a different point of its cycle.
@@ -26,6 +28,8 @@ internal static class DemoData
             new("disk:1", MetricKind.Disk, "Demo", Heat(seconds, 0.38, 36, 78), 42, Load(seconds, 0.7, 0, 60), Ordinal: 1),
             new("disk:2", MetricKind.Disk, "Demo", Heat(seconds, 0.50, 34, 76), 88, Load(seconds, 0.3, 0, 40), Ordinal: 2),
             new("fps", MetricKind.Fps, "Demo", null, null, Frames: Frames(seconds, refreshRateHz ?? DefaultRefreshRateHz)),
+            new("network", MetricKind.Network, "Demo", null, null, Network: Network(seconds)),
+            new("ping", MetricKind.Ping, "Demo", null, null, Ping: Ping(seconds)),
         };
 
         return new SensorSnapshot(DateTimeOffset.Now, metrics);
@@ -36,6 +40,20 @@ internal static class DemoData
     {
         var fps = 95 + 50 * Math.Sin(2 * Math.PI * seconds / FrameRatePeriodSeconds);
         return new FrameStats(fps, 1000 / fps, fps * 0.7, refreshRateHz);
+    }
+
+    // A download that swings between 2 and 300 Mbit/s over a gigabit connection, with a much smaller upload.
+    private static NetworkStats Network(double seconds) => new(
+        Load(seconds, 0.4, 2, FastestDownloadMegabits) * BytesPerMegabit,
+        Load(seconds, 0.9, 1, 40) * BytesPerMegabit,
+        1_000_000_000,
+        FastestDownloadMegabits * BytesPerMegabit);
+
+    // A delay between 8 and 90 ms, now and then with one message lost.
+    private static PingStats Ping(double seconds)
+    {
+        var delay = Load(seconds, 0.1, 8, 90);
+        return new PingStats(delay, delay * 0.95, seconds % 20 < 1 ? 10 : 0);
     }
 
     // Triangle wave from low to high and back; each device runs at its own phase.

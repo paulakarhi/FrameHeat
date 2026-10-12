@@ -40,6 +40,7 @@ internal static class German
         ["look_disk_activity"] = "Aktivität (wie ausgelastet)",
         ["look_accent"] = "Akzentfarbe",
         ["look_opacity_hint"] = "Die Deckkraft steuert den Glashintergrund oder, wenn kein Hintergrund vorhanden ist, den eigenen Hintergrund der Kacheln. Der einfarbige Hintergrund ist immer vollständig deckend.",
+        ["look_show_boxes"] = "Rahmen um jede Kachel anzeigen",
         ["look_show_labels"] = "Bezeichnungen und Symbole anzeigen",
         ["look_show_usage"] = "Auslastung in Prozent und Balken anzeigen",
 
@@ -133,5 +134,15 @@ internal static class German
         ["show_disks_off_hint"] = "Aktivieren Sie oben „Datenträger“, um auszuwählen, welche Datenträger angezeigt werden.",
         ["status_fps_ok"] = "Bildrate (FPS): verfügbar ✓",
         ["status_fps_missing"] = "Bildrate (FPS): nicht verfügbar. Sie benötigt Administratorrechte.",
+        ["show_net"] = "Netzwerkgeschwindigkeit",
+        ["show_ping"] = "Ping (Verzögerung zu einer Adresse)",
+        ["show_ping_hint"] = "Ping sendet einmal pro Sekunde eine kleine Testnachricht an die Adresse darüber. Solange die Ping-Kachel ausgeschaltet ist, passiert nichts.",
+        ["show_ping_address"] = "Ping-Adresse",
+        ["look_speed"] = "Geschwindigkeitseinheit",
+        ["look_speed_mbit"] = "Bit pro Sekunde (Mbit/s)",
+        ["look_speed_mbyte"] = "Byte pro Sekunde (MB/s)",
+        ["ping_loss"] = "Verloren",
+        ["ping_average"] = "Mittel",
+        ["net_peak"] = "Höchstwert",
     };
 }

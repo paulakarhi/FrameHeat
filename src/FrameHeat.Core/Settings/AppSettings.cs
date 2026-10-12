@@ -9,12 +9,16 @@ namespace FrameHeat.Core.Settings;
 /// </summary>
 public sealed class AppSettings : ObservableObject
 {
+    /// <summary>The address the ping tile measures the delay to until the user chooses another.</summary>
+    public const string DefaultPingTarget = "1.1.1.1";
+
     private AppearanceSettings _appearance = new();
     private TileVisibility _tiles = new();
     private AlertSettings _alerts = new();
     private WindowPlacement _placement = new();
     private bool _startWithWindows;
     private bool _alwaysOnTop = true;
+    private string _pingTarget = DefaultPingTarget;
 
     // Changes in any section are forwarded as one Changed event, so a listener needs only one subscription.
     public AppSettings()
@@ -37,8 +41,25 @@ public sealed class AppSettings : ObservableObject
     /// <summary>Keep the widget above games and other windows. When off it is an ordinary window that a game in front of it hides.</summary>
     public bool AlwaysOnTop { get => _alwaysOnTop; set => SetGeneral(ref _alwaysOnTop, value); }
 
+    /// <summary>The address the ping tile measures the delay to: an IP address or a host name. Anything else is ignored.</summary>
+    public string PingTarget
+    {
+        get => _pingTarget;
+        set
+        {
+            var address = value?.Trim();
+            if (IsValidPingTarget(address))
+                SetGeneral(ref _pingTarget, address!);
+        }
+    }
+
+    /// <summary>True for an IP address or a host name of a sensible length.</summary>
+    public static bool IsValidPingTarget(string? value)
+        => !string.IsNullOrWhiteSpace(value) && value.Length <= 253
+           && Uri.CheckHostName(value) is UriHostNameType.Dns or UriHostNameType.IPv4 or UriHostNameType.IPv6;
+
     // A setting that belongs to no section is reported as a general change.
-    private void SetGeneral(ref bool field, bool value, [CallerMemberName] string? name = null)
+    private void SetGeneral<T>(ref T field, T value, [CallerMemberName] string? name = null)
     {
         if (Set(ref field, value, name))
             Changed?.Invoke(new SettingsChange(SettingsArea.General, name));

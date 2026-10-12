@@ -40,6 +40,7 @@ internal static class Japanese
         ["look_disk_activity"] = "アクティビティ（負荷の高さ）",
         ["look_accent"] = "アクセントカラー",
         ["look_opacity_hint"] = "不透明度はガラス背景を調整します。背景がない場合は、タイル自体の背景を調整します。不透明の背景は常に完全に不透明です。",
+        ["look_show_boxes"] = "各タイルの周囲に枠を表示",
         ["look_show_labels"] = "ラベルとアイコンを表示",
         ["look_show_usage"] = "使用率のパーセントとバーを表示",
 
@@ -133,5 +134,15 @@ internal static class Japanese
         ["show_disks_off_hint"] = "上の「ディスク」をオンにすると、表示するディスクを選べます。",
         ["status_fps_ok"] = "フレームレート (FPS)：利用可能 ✓",
         ["status_fps_missing"] = "フレームレート (FPS)：利用できません。管理者権限が必要です。",
+        ["show_net"] = "ネットワーク速度",
+        ["show_ping"] = "Ping（アドレスまでの遅延）",
+        ["show_ping_hint"] = "Ping は、上のアドレスに 1 秒に 1 回、小さなテストメッセージを送ります。Ping タイルをオンにするまで、何もしません。",
+        ["show_ping_address"] = "Ping のアドレス",
+        ["look_speed"] = "速度の単位",
+        ["look_speed_mbit"] = "ビット毎秒 (Mbit/s)",
+        ["look_speed_mbyte"] = "バイト毎秒 (MB/s)",
+        ["ping_loss"] = "損失",
+        ["ping_average"] = "平均",
+        ["net_peak"] = "最高",
     };
 }

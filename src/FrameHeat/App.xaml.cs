@@ -87,7 +87,7 @@ public partial class App : Application
     // Report mode: open the sensors, sample long enough for load readings to settle, write the file.
     private static void WriteHardwareReport(string path)
     {
-        using var monitor = new HardwareMonitor();
+        using var monitor = new HardwareMonitor(new AppSettings());
         monitor.SampleForReport();
         File.WriteAllText(path, monitor.BuildReport());
     }

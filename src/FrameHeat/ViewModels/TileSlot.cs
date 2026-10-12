@@ -22,7 +22,9 @@ internal sealed class TileSlot : VisibilitySlot
         MetricKind.Vram => Loc.T("show_vram"),
         MetricKind.Memory => Loc.T("show_ram"),
         MetricKind.Disk => Loc.T("show_disks"),
-        _ => Loc.T("show_fps"),
+        MetricKind.Fps => Loc.T("show_fps"),
+        MetricKind.Network => Loc.T("show_net"),
+        _ => Loc.T("show_ping"),
     };
 
     public ICommand MoveUpCommand { get; }

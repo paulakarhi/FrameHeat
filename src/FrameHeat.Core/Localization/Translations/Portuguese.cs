@@ -40,6 +40,7 @@ internal static class Portuguese
         ["look_disk_activity"] = "Atividade (quão ocupado está)",
         ["look_accent"] = "Cor de destaque",
         ["look_opacity_hint"] = "A opacidade ajusta o fundo de vidro ou, quando não há fundo, o fundo próprio dos cartões. O fundo sólido é sempre totalmente opaco.",
+        ["look_show_boxes"] = "Mostrar uma caixa ao redor de cada cartão",
         ["look_show_labels"] = "Mostrar rótulos e ícones",
         ["look_show_usage"] = "Mostrar porcentagens de uso e barras",
 
@@ -133,5 +134,15 @@ internal static class Portuguese
         ["show_disks_off_hint"] = "Ative “Discos” acima para escolher quais discos são mostrados.",
         ["status_fps_ok"] = "Taxa de quadros (FPS): disponível ✓",
         ["status_fps_missing"] = "Taxa de quadros (FPS): indisponível. Exige permissões de administrador.",
+        ["show_net"] = "Velocidade da rede",
+        ["show_ping"] = "Ping (atraso até um endereço)",
+        ["show_ping_hint"] = "O ping envia uma pequena mensagem de teste uma vez por segundo para o endereço acima. Ele não faz nada enquanto o cartão Ping estiver desativado.",
+        ["show_ping_address"] = "Endereço do ping",
+        ["look_speed"] = "Unidade de velocidade",
+        ["look_speed_mbit"] = "Bits por segundo (Mbit/s)",
+        ["look_speed_mbyte"] = "Bytes por segundo (MB/s)",
+        ["ping_loss"] = "Perdidos",
+        ["ping_average"] = "Média",
+        ["net_peak"] = "Máximo",
     };
 }

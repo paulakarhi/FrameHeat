@@ -7,7 +7,7 @@ namespace FrameHeat.Sensors;
 /// Owns the sensor library and polls it once a second on a background thread. Consumers receive
 /// immutable snapshots and never touch the library directly.
 /// </summary>
-internal sealed class HardwareMonitor : IDisposable
+internal sealed class HardwareMonitor(AppSettings settings) : IDisposable
 {
     // Drive SMART reads are heavier than the rest and drive temperatures change slowly.
     private const int StorageReadInterval = 5;
@@ -16,6 +16,8 @@ internal sealed class HardwareMonitor : IDisposable
     private readonly object _gate = new();
     private readonly CancellationTokenSource _cancellation = new();
     private readonly FpsMonitor _fps = new();
+    private readonly NetworkMonitor _network = new();
+    private readonly PingMonitor _ping = new(settings);
     private readonly Computer _computer = new()
     {
         IsCpuEnabled = true,
@@ -37,6 +39,7 @@ internal sealed class HardwareMonitor : IDisposable
     public void Start()
     {
         _fps.Start();
+        _ping.Start();
         _loop = Task.Run(() => RunAsync(_cancellation.Token));
     }
 
@@ -124,17 +127,29 @@ internal sealed class HardwareMonitor : IDisposable
             readings = SensorPicker.Pick(_computer.Hardware);
         }
 
-        var snapshot = new SensorSnapshot(DateTimeOffset.Now, WithFrameRate(readings));
+        var snapshot = new SensorSnapshot(DateTimeOffset.Now, WithExtraReadings(readings));
         Volatile.Write(ref _latest, snapshot);
         SnapshotReady?.Invoke(snapshot);
     }
 
-    // The frame rate comes from event tracing, not from the sensor library. Without the listener
-    // there is no reading at all, so no tile is made for it.
-    private IReadOnlyList<MetricReading> WithFrameRate(IReadOnlyList<MetricReading> readings)
-        => _fps.IsRunning
-            ? [.. readings, new MetricReading("fps", MetricKind.Fps, "FPS", null, null, Frames: _fps.Read())]
-            : readings;
+    // The frame rate comes from event tracing and the network figures from Windows' own counters and from
+    // ping messages, not from the sensor library. A reading exists only when its source works and, for the
+    // network and the ping, the tile is on, so nothing is measured or sent for a tile nobody sees.
+    private List<MetricReading> WithExtraReadings(IReadOnlyList<MetricReading> readings)
+    {
+        var all = readings.ToList();
+
+        if (_fps.IsRunning)
+            all.Add(new MetricReading("fps", MetricKind.Fps, "FPS", null, null, Frames: _fps.Read()));
+
+        if (settings.Tiles.Network)
+            all.Add(new MetricReading("network", MetricKind.Network, "Network", null, null, Network: _network.Read()));
+
+        if (settings.Tiles.Ping)
+            all.Add(new MetricReading("ping", MetricKind.Ping, "Ping", null, null, Ping: _ping.Read()));
+
+        return all;
+    }
 
     // Refreshes a device and its sub-devices; drives are skipped on the ticks that do not read storage.
     private static void Update(IHardware hardware, bool includeStorage)
@@ -152,6 +167,7 @@ internal sealed class HardwareMonitor : IDisposable
     {
         _cancellation.Cancel();
         _fps.Dispose();
+        _ping.Dispose();
 
         try
         {

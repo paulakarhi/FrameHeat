@@ -15,6 +15,12 @@ internal sealed class MetricViewModel(string key) : ObservableObject
     // The ring of a frame rate is full at the monitor's refresh rate; this is used when that is unknown.
     private const double DefaultRefreshRateHz = 144;
 
+    // The ring of a network speed is full at the rated speed of the connection, or at a gigabit when that is unknown.
+    private const double DefaultLinkBitsPerSecond = 1_000_000_000;
+
+    // The ring of a ping is full at this delay.
+    private const double PingRingMs = 200;
+
     // Shown in place of a number while the device has no reading.
     private const string NoValue = "–";
 
@@ -27,6 +33,7 @@ internal sealed class MetricViewModel(string key) : ObservableObject
     private string _label = "";
     private string _iconData = "";
     private bool _showLabel = true;
+    private bool _showUsage = true;
     private TileDesign _design = TileDesign.Gauge;
     private TileShape _shape = TileShape.From(new AppearanceSettings());
     private double _textScale = 1.0;
@@ -53,6 +60,9 @@ internal sealed class MetricViewModel(string key) : ObservableObject
     public string Label { get => _label; private set => Set(ref _label, value); }
     public string IconData { get => _iconData; private set => Set(ref _iconData, value); }
     public bool ShowLabel { get => _showLabel; private set => Set(ref _showLabel, value); }
+
+    /// <summary>Whether usage figures and bars are switched on. They change the size of the tile, so it measures itself anew.</summary>
+    public bool ShowUsage { get => _showUsage; private set => Set(ref _showUsage, value); }
 
     public TileDesign Design
     {
@@ -128,18 +138,24 @@ internal sealed class MetricViewModel(string key) : ObservableObject
         Label = MetricLabels.For(reading);
         IconData = MetricIcons.For(reading.Kind);
         ShowLabel = appearance.ShowLabels;
+        ShowUsage = appearance.ShowUsage;
         Design = appearance.Design;
         Shape = TileShape.From(appearance);
         TextScale = appearance.TextScale;
 
         // The tile border and tint follow the worse of temperature and usage.
-        Severity = reading.Kind == MetricKind.Fps
-            ? ShowFrameRate(reading.Frames, appearance, colors)
-            : ShowDevice(reading, settings, colors);
+        Severity = reading.Kind switch
+        {
+            MetricKind.Fps => ShowFrameRate(reading.Frames, appearance, colors),
+            MetricKind.Network => ShowNetwork(reading.Network, appearance, colors),
+            MetricKind.Ping => ShowPing(reading.Ping, appearance, colors),
+            _ => ShowDevice(reading, settings, colors),
+        };
 
-        TileBackground = Palette.TileBackground(appearance.PanelStyle, appearance.BackgroundOpacity);
-        TileOutline = colors.Outline(Severity);
-        Tint = colors.Tint(Severity);
+        var boxes = appearance.ShowTileBoxes;
+        TileBackground = boxes ? Palette.TileBackground(appearance.PanelStyle, appearance.BackgroundOpacity) : Brushes.Transparent;
+        TileOutline = boxes ? colors.Outline(Severity) : Brushes.Transparent;
+        Tint = boxes ? colors.Tint(Severity) : Brushes.Transparent;
     }
 
     // A temperature and a load. Returns how bad the tile looks as a whole.
@@ -167,25 +183,16 @@ internal sealed class MetricViewModel(string key) : ObservableObject
     // Frames per second as the headline, the time between frames beside the label and the one percent
     // low and the monitor's refresh rate as small lines. A frame rate has no alert limits.
     private Severity ShowFrameRate(FrameStats? frames, AppearanceSettings appearance, SeverityColors colors)
-    {
-        var severity = frames is null ? Severity.Unknown : Severity.Normal;
+        => frames is null
+            ? ShowMeasurement(null, appearance, colors)
+            : ShowMeasurement(new Measurement(
+                NumberText.Whole(frames.FramesPerSecond),
+                "FPS",
+                frames.FramesPerSecond / (frames.RefreshRateHz ?? DefaultRefreshRateHz),
+                $"{frames.FrameTimeMs.ToString("0.0", CultureInfo.CurrentCulture)} ms",
+                string.Join("\n", FrameLines(frames))), appearance, colors);
 
-        PrimaryText = frames is null ? NoValue : NumberText.Whole(frames.FramesPerSecond);
-        PrimaryUnit = frames is null ? "" : "FPS";
-        GaugeFraction = frames is null ? 0 : Math.Clamp(frames.FramesPerSecond / (frames.RefreshRateHz ?? DefaultRefreshRateHz), 0, 1);
-        ShowPrimaryColors(severity, appearance, colors);
-
-        // The only number written with the user's own decimal separator; whole numbers have none.
-        SecondaryText = frames is null ? "" : $"{frames.FrameTimeMs.ToString("0.0", CultureInfo.CurrentCulture)} ms";
-        ShowSecondary = frames is not null;
-        ShowBar = false;
-        UsageFraction = 0;
-        ExtraText = frames is null ? "" : string.Join("\n", ExtraLines(frames));
-
-        return severity;
-    }
-
-    private static IEnumerable<string> ExtraLines(FrameStats frames)
+    private static IEnumerable<string> FrameLines(FrameStats frames)
     {
         if (frames.OnePercentLowFps is { } low)
             yield return $"{Loc.T("fps_low")} {NumberText.Whole(low)}";
@@ -193,6 +200,75 @@ internal sealed class MetricViewModel(string key) : ObservableObject
         if (frames.RefreshRateHz is { } hertz)
             yield return $"{Loc.T("fps_display")} {NumberText.Whole(hertz)} Hz";
     }
+
+    // The download speed as the headline and the upload speed beside the label, both in the unit that suits
+    // the faster of the two. The ring fills as the download approaches what the connection is rated for, and
+    // the highest download seen so far shows what the connection can do while nothing is being downloaded.
+    private Severity ShowNetwork(NetworkStats? network, AppearanceSettings appearance, SeverityColors colors)
+    {
+        if (network is null)
+            return ShowMeasurement(null, appearance, colors);
+
+        var culture = CultureInfo.CurrentCulture;
+        var step = Speed.StepFor(Math.Max(network.DownloadBytesPerSecond, network.UploadBytesPerSecond), appearance.SpeedUnit);
+        var linkBitsPerSecond = network.LinkSpeedBitsPerSecond ?? DefaultLinkBitsPerSecond;
+        return ShowMeasurement(new Measurement(
+            step.Figure(network.DownloadBytesPerSecond, culture),
+            step.Symbol,
+            Speed.BitsPerSecond(network.DownloadBytesPerSecond) / linkBitsPerSecond,
+            "↑ " + step.Figure(network.UploadBytesPerSecond, culture),
+            PeakLine(network.PeakDownloadBytesPerSecond, appearance.SpeedUnit, culture)), appearance, colors);
+    }
+
+    private static string PeakLine(double peakBytesPerSecond, SpeedUnit unit, CultureInfo culture)
+    {
+        if (peakBytesPerSecond <= 0)
+            return "";
+
+        var step = Speed.StepFor(peakBytesPerSecond, unit);
+        return $"{Loc.T("net_peak")} {step.Figure(peakBytesPerSecond, culture)} {step.Symbol}";
+    }
+
+    // The latest delay as the headline, with the average and the share of lost messages as small lines.
+    private Severity ShowPing(PingStats? ping, AppearanceSettings appearance, SeverityColors colors)
+        => ping is null
+            ? ShowMeasurement(null, appearance, colors)
+            : ShowMeasurement(new Measurement(
+                ping.LastMs is { } last ? NumberText.Whole(last) : NoValue,
+                "ms",
+                (ping.LastMs ?? 0) / PingRingMs,
+                "",
+                string.Join("\n", PingLines(ping))), appearance, colors);
+
+    private static IEnumerable<string> PingLines(PingStats ping)
+    {
+        if (ping.AverageMs is { } average)
+            yield return $"{Loc.T("ping_average")} {NumberText.Whole(average)} ms";
+
+        yield return $"{Loc.T("ping_loss")} {NumberText.Whole(ping.LossPercent)} %";
+    }
+
+    // Frame rate, network speed and ping are measurements without alert limits: they are normal while
+    // there is a reading and unknown without one.
+    private Severity ShowMeasurement(Measurement? measurement, AppearanceSettings appearance, SeverityColors colors)
+    {
+        var severity = measurement is null ? Severity.Unknown : Severity.Normal;
+
+        PrimaryText = measurement?.Value ?? NoValue;
+        PrimaryUnit = measurement?.Unit ?? "";
+        GaugeFraction = measurement is null ? 0 : Math.Clamp(measurement.RingFraction, 0, 1);
+        ShowPrimaryColors(severity, appearance, colors);
+
+        SecondaryText = measurement?.Secondary ?? "";
+        ShowSecondary = SecondaryText.Length > 0;
+        ShowBar = false;
+        UsageFraction = 0;
+        ExtraText = measurement?.Extra ?? "";
+
+        return severity;
+    }
+
+    private sealed record Measurement(string Value, string Unit, double RingFraction, string Secondary, string Extra);
 
     // Only memory and disk fullness raise an alert; CPU and GPU load is never a warning in itself.
     private Severity EvaluateUsage(MetricKind kind, double? usage, DiskUsageMode diskMode)

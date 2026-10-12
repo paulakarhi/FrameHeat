@@ -12,9 +12,9 @@ public static class FrameAnalyzer
     // Below this many frames the slowest one percent is a single unlucky frame rather than a trend.
     private const int MinFramesForLow = 30;
 
-    /// <param name="presentTimes">Moments in seconds, oldest first.</param>
+    /// <param name="presentTimes">Moments in seconds, in any order: frames reach the listener one processor buffer at a time.</param>
     /// <param name="now">The end of the window, on the same clock as <paramref name="presentTimes"/>.</param>
-    /// <returns>Null when the game has not presented enough frames in the last second.</returns>
+    /// <returns>Null when the game has not presented enough frames in the last second before <paramref name="now"/>.</returns>
     public static FrameStats? Analyze(IReadOnlyList<double> presentTimes, double now, double? refreshRateHz)
     {
         var recent = Within(presentTimes, now, RateWindowSeconds);
@@ -29,8 +29,9 @@ public static class FrameAnalyzer
         return new FrameStats(fps, 1000 / fps, OnePercentLow(Within(presentTimes, now, LowWindowSeconds)), refreshRateHz);
     }
 
+    // The moments inside the window, oldest first.
     private static List<double> Within(IReadOnlyList<double> times, double now, double seconds)
-        => times.Where(time => time > now - seconds && time <= now).ToList();
+        => times.Where(time => time > now - seconds && time <= now).Order().ToList();
 
     private static double? OnePercentLow(List<double> times)
     {

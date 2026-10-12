@@ -14,7 +14,7 @@ public sealed partial class AppearanceSettings : ObservableObject
     public const double MaxCornerRadius = 24;
     public const double MinTileSpacing = 0;
     public const double MaxTileSpacing = 16;
-    public const double MinTextScale = 0.8;
+    public const double MinTextScale = 0.5;
     public const double MaxTextScale = 1.5;
     public const double MinWidgetOpacity = 0.3;
     public const double MaxWidgetOpacity = 1.0;
@@ -32,6 +32,7 @@ public sealed partial class AppearanceSettings : ObservableObject
     private PanelOrientation _orientation = PanelOrientation.Horizontal;
     private PanelStyle _panelStyle = PanelStyle.Glass;
     private TemperatureUnit _temperatureUnit = TemperatureUnit.Celsius;
+    private SpeedUnit _speedUnit = SpeedUnit.MegabitsPerSecond;
     private double _scale = 1.0;
     private double _backgroundOpacity = 0.85;
     private double _cornerRadius = 13;
@@ -41,6 +42,7 @@ public sealed partial class AppearanceSettings : ObservableObject
     private string _accentColor = DefaultAccentColor;
     private string _warningColor = DefaultWarningColor;
     private string _criticalColor = DefaultCriticalColor;
+    private bool _showTileBoxes = true;
     private bool _showLabels = true;
     private bool _showUsage = true;
     private DiskUsageMode _diskUsage = DiskUsageMode.UsedSpace;
@@ -49,6 +51,7 @@ public sealed partial class AppearanceSettings : ObservableObject
     public PanelOrientation Orientation { get => _orientation; set => Set(ref _orientation, value); }
     public PanelStyle PanelStyle { get => _panelStyle; set => Set(ref _panelStyle, value); }
     public TemperatureUnit TemperatureUnit { get => _temperatureUnit; set => Set(ref _temperatureUnit, value); }
+    public SpeedUnit SpeedUnit { get => _speedUnit; set => Set(ref _speedUnit, value); }
 
     public double Scale { get => _scale; set => SetClamped(ref _scale, value, MinScale, MaxScale); }
 
@@ -71,6 +74,9 @@ public sealed partial class AppearanceSettings : ObservableObject
     public string AccentColor { get => _accentColor; set => SetColor(ref _accentColor, value); }
     public string WarningColor { get => _warningColor; set => SetColor(ref _warningColor, value); }
     public string CriticalColor { get => _criticalColor; set => SetColor(ref _criticalColor, value); }
+
+    /// <summary>The box around each tile. Without it a reading's own color is the only sign of an alert.</summary>
+    public bool ShowTileBoxes { get => _showTileBoxes; set => Set(ref _showTileBoxes, value); }
 
     public bool ShowLabels { get => _showLabels; set => Set(ref _showLabels, value); }
     public bool ShowUsage { get => _showUsage; set => Set(ref _showUsage, value); }

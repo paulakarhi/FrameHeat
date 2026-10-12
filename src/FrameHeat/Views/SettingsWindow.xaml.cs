@@ -1,4 +1,5 @@
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Threading;
 using FrameHeat.Commands;
@@ -83,6 +84,11 @@ internal sealed partial class SettingsWindow : Window
     private void OnResetLimits(object sender, RoutedEventArgs e) => _controller.Settings.Alerts.ResetToDefaults();
 
     private void OnResetColors(object sender, RoutedEventArgs e) => _controller.Settings.Appearance.ResetAlertColors();
+
+    // An address that is not valid is not saved, so the box goes back to the one in use. This waits until
+    // the binding has had its turn to hand the text over.
+    private void OnPingTargetLostFocus(object sender, RoutedEventArgs e)
+        => Dispatcher.BeginInvoke(() => PingTargetBox.GetBindingExpression(TextBox.TextProperty)?.UpdateTarget(), DispatcherPriority.Background);
 
     // Each corner button carries its corner in Tag.
     private void OnSnap(object sender, RoutedEventArgs e) => _controller.SnapTo((ScreenCorner)((FrameworkElement)sender).Tag);

@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using FrameHeat.Native;
 using FrameHeat.Services;
 using Microsoft.Diagnostics.Tracing;
@@ -21,11 +22,11 @@ internal sealed class FpsMonitor : IDisposable
 
     private const string DefaultSessionName = "FrameHeat.Fps";
 
-    // Events reach the listener up to a second late. Looking at a window that ended a second ago
-    // means no frame of it is still on its way.
-    private const double DeliverySeconds = 1;
-
     private readonly FrameTracker _frames = new();
+
+    // The clock the arrival of events is measured on: it does not jump when the system clock is adjusted.
+    private readonly Stopwatch _clock = Stopwatch.StartNew();
+
     private readonly string _sessionName;
     private volatile TraceEventSession? _session;
 
@@ -65,7 +66,7 @@ internal sealed class FpsMonitor : IDisposable
         if (processId == 0 || processId == Environment.ProcessId)
             return null;
 
-        var now = Seconds(DateTime.Now) - DeliverySeconds;
+        var now = Arrival();
         _frames.Prune(now);
         return _frames.Read(processId, now, WindowTools.RefreshRateHz(window));
     }
@@ -105,8 +106,10 @@ internal sealed class FpsMonitor : IDisposable
     private void OnEvent(TraceEvent data)
     {
         if ((int)data.ID is PresentStart or PresentMultiplaneOverlayStart)
-            _frames.OnPresent(data.ProcessID, Seconds(data.TimeStamp));
+            _frames.OnPresent(data.ProcessID, Seconds(data.TimeStamp), Arrival());
     }
+
+    private double Arrival() => _clock.Elapsed.TotalSeconds;
 
     private static double Seconds(DateTime time) => time.Ticks / (double)TimeSpan.TicksPerSecond;
 }

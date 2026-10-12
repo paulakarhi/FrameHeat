@@ -40,6 +40,7 @@ internal static class English
         ["look_disk_activity"] = "Activity (how busy it is)",
         ["look_accent"] = "Accent color",
         ["look_opacity_hint"] = "Background opacity adjusts the glass background or, when there is no background, the tiles' own background. The solid background is always fully opaque.",
+        ["look_show_boxes"] = "Show a box around each tile",
         ["look_show_labels"] = "Show labels and icons",
         ["look_show_usage"] = "Show usage percentages and bars",
 
@@ -133,5 +134,15 @@ internal static class English
         ["show_disks_off_hint"] = "Switch on Disks above to choose which disks are shown.",
         ["status_fps_ok"] = "Frame rate (FPS): available ✓",
         ["status_fps_missing"] = "Frame rate (FPS): not available. It needs administrator permissions.",
+        ["show_net"] = "Network speed",
+        ["show_ping"] = "Ping (delay to an address)",
+        ["show_ping_hint"] = "Ping sends a small test message to the address above once a second. It does nothing until the Ping tile is switched on.",
+        ["show_ping_address"] = "Ping address",
+        ["look_speed"] = "Speed unit",
+        ["look_speed_mbit"] = "Bits per second (Mbit/s)",
+        ["look_speed_mbyte"] = "Bytes per second (MB/s)",
+        ["ping_loss"] = "Lost",
+        ["ping_average"] = "Average",
+        ["net_peak"] = "Highest",
     };
 }

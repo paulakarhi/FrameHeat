@@ -9,6 +9,8 @@ namespace FrameHeat.Core.Metrics;
 /// <param name="DeviceLimitC">Temperature at which the device itself reports overheating, when it exposes one.</param>
 /// <param name="Ordinal">Disk number when several disks are shown, otherwise 0.</param>
 /// <param name="Frames">The frame rate figures of an FPS reading; null when no game is running.</param>
+/// <param name="Network">The speed figures of a network reading; null until two measurements have been made.</param>
+/// <param name="Ping">The delay figures of a ping reading; null until the first message has been sent.</param>
 public sealed record MetricReading(
     string Key,
     MetricKind Kind,
@@ -18,4 +20,6 @@ public sealed record MetricReading(
     double? ActivityPercent = null,
     double? DeviceLimitC = null,
     int Ordinal = 0,
-    FrameStats? Frames = null);
+    FrameStats? Frames = null,
+    NetworkStats? Network = null,
+    PingStats? Ping = null);

@@ -40,6 +40,7 @@ internal static class Korean
         ["look_disk_activity"] = "활동량 (얼마나 바쁜지)",
         ["look_accent"] = "강조 색상",
         ["look_opacity_hint"] = "불투명도는 유리 배경을 조절하며, 배경이 없을 때는 타일 자체의 배경을 조절합니다. 어두운 단색 배경은 항상 완전히 불투명합니다.",
+        ["look_show_boxes"] = "각 타일 주위에 상자 표시",
         ["look_show_labels"] = "라벨과 아이콘 표시",
         ["look_show_usage"] = "사용률 퍼센트와 막대 표시",
 
@@ -133,5 +134,15 @@ internal static class Korean
         ["show_disks_off_hint"] = "위의 ‘디스크’를 켜면 표시할 디스크를 선택할 수 있습니다.",
         ["status_fps_ok"] = "프레임 속도 (FPS): 사용 가능 ✓",
         ["status_fps_missing"] = "프레임 속도 (FPS): 사용할 수 없습니다. 관리자 권한이 필요합니다.",
+        ["show_net"] = "네트워크 속도",
+        ["show_ping"] = "Ping(주소까지의 지연 시간)",
+        ["show_ping_hint"] = "Ping은 위 주소로 1초에 한 번 작은 테스트 메시지를 보냅니다. Ping 타일을 켜기 전에는 아무것도 하지 않습니다.",
+        ["show_ping_address"] = "Ping 주소",
+        ["look_speed"] = "속도 단위",
+        ["look_speed_mbit"] = "초당 비트 (Mbit/s)",
+        ["look_speed_mbyte"] = "초당 바이트 (MB/s)",
+        ["ping_loss"] = "손실",
+        ["ping_average"] = "평균",
+        ["net_peak"] = "최고",
     };
 }

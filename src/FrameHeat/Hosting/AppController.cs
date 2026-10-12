@@ -22,7 +22,7 @@ internal sealed class AppController : IAppCommands, IDisposable
     private readonly Dispatcher _dispatcher = Application.Current.Dispatcher;
     private readonly SettingsStore _store;
     private readonly bool _firstRun;
-    private readonly HardwareMonitor _monitor = new();
+    private readonly HardwareMonitor _monitor;
     private readonly DebouncedAction _saver;
     private readonly OverlayViewModel _viewModel;
     private readonly OverlayWindow _overlay;
@@ -46,6 +46,7 @@ internal sealed class AppController : IAppCommands, IDisposable
         _store = new SettingsStore(options.SettingsFile ?? SettingsStore.DefaultPath);
         _firstRun = !_store.Exists;
         Settings = _store.Load();
+        _monitor = new HardwareMonitor(Settings);
 
         _saver = new DebouncedAction(_dispatcher, SaveDelay, Save);
         _viewModel = new OverlayViewModel(Settings);

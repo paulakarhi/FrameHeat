@@ -40,6 +40,7 @@ internal static class Finnish
         ["look_disk_activity"] = "Aktiivisuus (kuinka kiireinen)",
         ["look_accent"] = "Korostusväri",
         ["look_opacity_hint"] = "Taustan peittävyys säätää lasitaustaa tai, kun taustaa ei ole, ruutujen omaa taustaa. Kiinteä tausta on aina täysin peittävä.",
+        ["look_show_boxes"] = "Näytä laatikko jokaisen ruudun ympärillä",
         ["look_show_labels"] = "Näytä otsikot ja kuvakkeet",
         ["look_show_usage"] = "Näytä käyttöprosentit ja palkit",
 
@@ -133,5 +134,15 @@ internal static class Finnish
         ["show_disks_off_hint"] = "Ota yllä oleva Levyt käyttöön, niin voit valita, mitkä levyt näytetään.",
         ["status_fps_ok"] = "Kuvataajuus (FPS): käytettävissä ✓",
         ["status_fps_missing"] = "Kuvataajuus (FPS): ei käytettävissä. Se vaatii järjestelmänvalvojan oikeudet.",
+        ["show_net"] = "Verkon nopeus",
+        ["show_ping"] = "Ping (viive osoitteeseen)",
+        ["show_ping_hint"] = "Ping lähettää kerran sekunnissa pienen testiviestin yllä olevaan osoitteeseen. Se ei tee mitään, ennen kuin Ping-ruutu on kytketty päälle.",
+        ["show_ping_address"] = "Pingin osoite",
+        ["look_speed"] = "Nopeuden yksikkö",
+        ["look_speed_mbit"] = "Bittiä sekunnissa (Mbit/s)",
+        ["look_speed_mbyte"] = "Tavua sekunnissa (MB/s)",
+        ["ping_loss"] = "Hävinnyt",
+        ["ping_average"] = "Keskiarvo",
+        ["net_peak"] = "Suurin",
     };
 }

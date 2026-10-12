@@ -10,6 +10,8 @@ internal static class MetricLabels
         MetricKind.Vram => "VRAM",
         MetricKind.Memory => "RAM",
         MetricKind.Fps => "FPS",
+        MetricKind.Network => "NET",
+        MetricKind.Ping => "PING",
         _ => reading.Ordinal > 0 ? $"{Loc.T("metric_disk")} {reading.Ordinal}" : Loc.T("metric_disk"),
     };
 }

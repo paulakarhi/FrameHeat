@@ -69,6 +69,13 @@
             </ComboBox>
           </HeaderedContentControl>
 
+          <HeaderedContentControl Style="{StaticResource FormRow}" Header="{markup:T look_speed}">
+            <ComboBox SelectedValuePath="Tag" SelectedValue="{Binding Appearance.SpeedUnit}">
+              <ComboBoxItem Content="{markup:T look_speed_mbit}" Tag="{x:Static core:SpeedUnit.MegabitsPerSecond}" />
+              <ComboBoxItem Content="{markup:T look_speed_mbyte}" Tag="{x:Static core:SpeedUnit.MegabytesPerSecond}" />
+            </ComboBox>
+          </HeaderedContentControl>
+
           <views:SliderRow Label="{markup:T look_size}" Value="{Binding Appearance.Scale}"
                            Minimum="{x:Static core:AppearanceSettings.MinScale}" Maximum="{x:Static core:AppearanceSettings.MaxScale}" />
 
@@ -88,6 +95,7 @@
             </WrapPanel>
           </HeaderedContentControl>
 
+          <CheckBox Content="{markup:T look_show_boxes}" IsChecked="{Binding Appearance.ShowTileBoxes}" />
           <CheckBox Content="{markup:T look_show_labels}" IsChecked="{Binding Appearance.ShowLabels}" />
           <CheckBox Content="{markup:T look_show_usage}" IsChecked="{Binding Appearance.ShowUsage}" />
         </StackPanel>
@@ -187,6 +195,12 @@
           </StackPanel>
 
           <TextBlock Style="{StaticResource Hint}" Margin="0,10,0,0" Text="{markup:T show_fps_hint}" />
+
+          <HeaderedContentControl Style="{StaticResource FormRow}" Margin="0,10,0,0" Header="{markup:T show_ping_address}">
+            <TextBox x:Name="PingTargetBox" MinHeight="36" Margin="0,4" VerticalContentAlignment="Center" MaxLength="253"
+                     Text="{Binding PingTarget, UpdateSourceTrigger=LostFocus}" LostFocus="OnPingTargetLostFocus" />
+          </HeaderedContentControl>
+          <TextBlock Style="{StaticResource Hint}" Text="{markup:T show_ping_hint}" />
         </StackPanel>
       </Border>
 

@@ -22,6 +22,14 @@ internal static class MetricIcons
     private const string Fps =
         "M3,17 A9,9 0 0 1 21,17 M12,17 L17,10 M12,17 H12.1";
 
+    // A download arrow beside an upload arrow.
+    private const string Network =
+        "M8,4 V18 M4,14 L8,18 L12,14 M16,20 V6 M12,10 L16,6 L20,10";
+
+    // A pulse line, like a heartbeat.
+    private const string Ping =
+        "M2,12 H7 L10,5 L14,19 L17,12 H22";
+
     /// <summary>The path data (WPF geometry mini-language) of the icon for a kind of device.</summary>
     public static string For(MetricKind kind) => kind switch
     {
@@ -30,6 +38,8 @@ internal static class MetricIcons
         MetricKind.Vram => Vram,
         MetricKind.Memory => Memory,
         MetricKind.Fps => Fps,
+        MetricKind.Network => Network,
+        MetricKind.Ping => Ping,
         _ => Disk,
     };
 }

@@ -40,6 +40,7 @@ internal static class French
         ["look_disk_activity"] = "Activité (niveau d'occupation)",
         ["look_accent"] = "Couleur d'accentuation",
         ["look_opacity_hint"] = "L'opacité règle l'arrière-plan en verre ou, en l'absence d'arrière-plan, le fond propre des vignettes. L'arrière-plan uni est toujours totalement opaque.",
+        ["look_show_boxes"] = "Afficher un cadre autour de chaque vignette",
         ["look_show_labels"] = "Afficher les libellés et les icônes",
         ["look_show_usage"] = "Afficher les pourcentages d'utilisation et les barres",
 
@@ -133,5 +134,15 @@ internal static class French
         ["show_disks_off_hint"] = "Activez « Disques » ci-dessus pour choisir les disques affichés.",
         ["status_fps_ok"] = "Fréquence d'images (FPS) : disponible ✓",
         ["status_fps_missing"] = "Fréquence d'images (FPS) : indisponible. Elle nécessite les droits d'administrateur.",
+        ["show_net"] = "Débit réseau",
+        ["show_ping"] = "Ping (délai vers une adresse)",
+        ["show_ping_hint"] = "Le ping envoie un petit message de test une fois par seconde à l'adresse ci-dessus. Il ne fait rien tant que la vignette Ping n'est pas activée.",
+        ["show_ping_address"] = "Adresse du ping",
+        ["look_speed"] = "Unité de débit",
+        ["look_speed_mbit"] = "Bits par seconde (Mbit/s)",
+        ["look_speed_mbyte"] = "Octets par seconde (MB/s)",
+        ["ping_loss"] = "Perdus",
+        ["ping_average"] = "Moyenne",
+        ["net_peak"] = "Maximum",
     };
 }
