@@ -3,6 +3,8 @@
 [![Latest release](https://img.shields.io/github/v/release/paulakarhi/FrameHeat)](https://github.com/paulakarhi/FrameHeat/releases/latest)
 [![License](https://img.shields.io/github/license/paulakarhi/FrameHeat)](LICENSE)
 
+<a href="https://alternativeto.net/software/frameheat/about/?utm_source=badge&utm_medium=referral"><img src="https://alternativeto.net/static/badges/badge-compact-color.svg" alt="FrameHeat on AlternativeTo" width="160"></a>
+
 A small, free FPS counter and hardware monitor for Windows 11. It shows the temperature and load of the CPU,
 graphics card, video memory, RAM and every disk, together with the frame rate of the game you are playing and,
 if you like, the speed and the delay of your network connection, in a panel that stays on top of games and other
