@@ -8,6 +8,8 @@ graphics card, video memory, RAM and every disk, together with the frame rate of
 that stays on top of games and other windows. A reading turns yellow as the temperature nears its limit and pulses
 red once the limit is passed.
 
+<img src="docs/images/demo.gif" alt="The widget in demo mode: the readings climb through the yellow and red alert levels while the frame rate changes" width="820">
+
 Nothing else has to be installed or configured: no HWiNFO, no MSI Afterburner, no RTSS. The defaults work as
 they are; the settings window only adjusts the look.
 
