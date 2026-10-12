@@ -175,7 +175,8 @@ new user interface, not new core logic.
 - **Frame rate.** It is measured for the program in the foreground and works for programs that present their frames
   through DXGI, which includes DirectX 10, 11 and 12 games. It has been tried with Fortnite; Vulkan and OpenGL games
   have not been tried. Windows delivers the frame information about two seconds late, so the figure follows the game
-  with that delay. The tile shows a dash while the foreground program is not drawing frames.
+  with that delay. The tile shows a dash while the foreground program is not drawing frames. Games reported to work,
+  and those that do not, are collected in [a discussion](https://github.com/paulakarhi/FrameHeat/discussions/2).
 - **Network speed and ping.** The speed is that of the connection with the most traffic. The ping uses ICMP echo
   messages, which some networks block; it then shows a dash and the messages count as lost.
 - **Exclusive fullscreen.** An ordinary window does not show over old games in true exclusive fullscreen. Borderless
