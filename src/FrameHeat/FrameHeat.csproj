@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <RootNamespace>FrameHeat</RootNamespace>
+    <AssemblyName>FrameHeat</AssemblyName>
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <!-- Experimental in .NET 9: WPF Fluent theme (WPF0001), WinForms dark mode (WFO5001) and the
+         WinForms DPI analyzer, which does not apply to a WPF manifest (WFO0003). -->
+    <NoWarn>$(NoWarn);WPF0001;WFO5001;WFO0003</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' != 'Release'">
+    <ApplicationManifest>app.debug.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- WPF and WinForms both define Application, MessageBox and others; WinForms is only used for the tray icon. -->
+    <Using Remove="System.Windows.Forms" />
+    <Using Remove="System.Drawing" />
+    <Using Include="System.IO" />
+    <Using Include="System.Threading" />
+    <Using Include="FrameHeat.Core" />
+    <Using Include="FrameHeat.Core.Alerts" />
+    <Using Include="FrameHeat.Core.Localization" />
+    <Using Include="FrameHeat.Core.Metrics" />
+    <Using Include="FrameHeat.Core.Settings" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- TraceEvent comes with Microsoft's closed-source KernelTraceControl.dll and msdia140.dll, which are only
+         needed to read trace files and symbols. Listening to live frame events needs neither, so they stay out of
+         the build and the published program. -->
+    <None Remove="$(NuGetPackageRoot)microsoft.diagnostics.tracing.traceevent/**/build/native/**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LibreHardwareMonitorLib" Version="0.9.6" />
+    <PackageReference Include="Microsoft.Diagnostics.Tracing.TraceEvent" Version="3.1.16" />
+    <ProjectReference Include="..\FrameHeat.Core\FrameHeat.Core.csproj" />
+    <Resource Include="Assets\app.ico" />
+  </ItemGroup>
+
+</Project>

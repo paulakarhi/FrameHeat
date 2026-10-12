@@ -1,0 +1,251 @@
+<Window x:Class="FrameHeat.Views.SettingsWindow"
+        x:ClassModifier="internal"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:core="clr-namespace:FrameHeat.Core.Settings;assembly=FrameHeat.Core"
+        xmlns:layout="clr-namespace:FrameHeat.Layout"
+        xmlns:views="clr-namespace:FrameHeat.Views"
+        xmlns:vm="clr-namespace:FrameHeat.ViewModels"
+        xmlns:markup="clr-namespace:FrameHeat.Markup"
+        Title="{markup:T settings_window_title}"
+        Width="560" Height="820" MinWidth="500" MinHeight="500"
+        WindowStartupLocation="CenterScreen">
+
+  <Window.Resources>
+    <ResourceDictionary Source="/FrameHeat;component/Themes/WindowControls.xaml" />
+  </Window.Resources>
+
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <StackPanel Margin="24,20,24,12">
+
+      <TextBlock Style="{StaticResource PageTitle}" Text="FrameHeat" />
+      <TextBlock Style="{StaticResource Hint}" Margin="0,4,0,18" Text="{markup:T settings_intro}" />
+
+      <Border Style="{StaticResource Card}">
+        <StackPanel>
+          <TextBlock Style="{StaticResource SectionTitle}" Text="{markup:T startup_title}" />
+          <CheckBox Content="{markup:T startup_autostart}" IsChecked="{Binding StartWithWindows}" />
+          <TextBlock Style="{StaticResource Hint}" Text="{markup:T startup_hint}" />
+        </StackPanel>
+      </Border>
+
+      <Border Style="{StaticResource Card}">
+        <StackPanel>
+          <TextBlock Style="{StaticResource SectionTitle}" Text="{markup:T look_title}" />
+
+          <HeaderedContentControl Style="{StaticResource FormRow}" Header="{markup:T look_design}">
+            <ComboBox SelectedValuePath="Tag" SelectedValue="{Binding Appearance.Design}">
+              <ComboBoxItem Content="{markup:T look_design_gauge}" Tag="{x:Static core:TileDesign.Gauge}" />
+              <ComboBoxItem Content="{markup:T look_design_compact}" Tag="{x:Static core:TileDesign.Compact}" />
+              <ComboBoxItem Content="{markup:T look_design_textrow}" Tag="{x:Static core:TileDesign.TextRow}" />
+            </ComboBox>
+          </HeaderedContentControl>
+
+          <HeaderedContentControl Style="{StaticResource FormRow}" Header="{markup:T look_orientation}">
+            <ComboBox SelectedValuePath="Tag" SelectedValue="{Binding Appearance.Orientation}">
+              <ComboBoxItem Content="{markup:T look_horizontal}" Tag="{x:Static core:PanelOrientation.Horizontal}" />
+              <ComboBoxItem Content="{markup:T look_vertical}" Tag="{x:Static core:PanelOrientation.Vertical}" />
+            </ComboBox>
+          </HeaderedContentControl>
+
+          <HeaderedContentControl Style="{StaticResource FormRow}" Header="{markup:T look_background}">
+            <ComboBox SelectedValuePath="Tag" SelectedValue="{Binding Appearance.PanelStyle}">
+              <ComboBoxItem Content="{markup:T look_bg_glass}" Tag="{x:Static core:PanelStyle.Glass}" />
+              <ComboBoxItem Content="{markup:T look_bg_solid}" Tag="{x:Static core:PanelStyle.Solid}" />
+              <ComboBoxItem Content="{markup:T look_bg_none}" Tag="{x:Static core:PanelStyle.None}" />
+            </ComboBox>
+          </HeaderedContentControl>
+
+          <views:SliderRow Style="{StaticResource OpacityRow}" Label="{markup:T look_opacity}"
+                           Value="{Binding Appearance.BackgroundOpacity}"
+                           Minimum="{x:Static core:AppearanceSettings.MinBackgroundOpacity}" Maximum="{x:Static core:AppearanceSettings.MaxBackgroundOpacity}" />
+
+          <TextBlock Style="{StaticResource Hint}" Margin="0,0,0,8" Text="{markup:T look_opacity_hint}" />
+
+          <HeaderedContentControl Style="{StaticResource FormRow}" Header="{markup:T look_unit}">
+            <ComboBox SelectedValuePath="Tag" SelectedValue="{Binding Appearance.TemperatureUnit}">
+              <ComboBoxItem Content="{markup:T look_unit_celsius}" Tag="{x:Static core:TemperatureUnit.Celsius}" />
+              <ComboBoxItem Content="{markup:T look_unit_fahrenheit}" Tag="{x:Static core:TemperatureUnit.Fahrenheit}" />
+            </ComboBox>
+          </HeaderedContentControl>
+
+          <views:SliderRow Label="{markup:T look_size}" Value="{Binding Appearance.Scale}"
+                           Minimum="{x:Static core:AppearanceSettings.MinScale}" Maximum="{x:Static core:AppearanceSettings.MaxScale}" />
+
+          <HeaderedContentControl Style="{StaticResource FormRow}" Header="{markup:T look_disk}">
+            <ComboBox SelectedValuePath="Tag" SelectedValue="{Binding Appearance.DiskUsage}">
+              <ComboBoxItem Content="{markup:T look_disk_used}" Tag="{x:Static core:DiskUsageMode.UsedSpace}" />
+              <ComboBoxItem Content="{markup:T look_disk_activity}" Tag="{x:Static core:DiskUsageMode.Activity}" />
+            </ComboBox>
+          </HeaderedContentControl>
+
+          <HeaderedContentControl Style="{StaticResource FormRow}" Header="{markup:T look_accent}">
+            <WrapPanel VerticalAlignment="Center">
+              <ListBox Style="{StaticResource AccentSwatchList}" ItemContainerStyle="{StaticResource AccentSwatch}"
+                       ItemsSource="{x:Static core:AppearanceSettings.AccentChoices}" SelectedItem="{Binding Appearance.AccentColor}" />
+              <Button Style="{StaticResource CustomColorButton}" Tag="AccentColor" Click="OnPickColor"
+                      ToolTip="{markup:T look_accent_custom}" AutomationProperties.Name="{markup:T look_accent_custom}" />
+            </WrapPanel>
+          </HeaderedContentControl>
+
+          <CheckBox Content="{markup:T look_show_labels}" IsChecked="{Binding Appearance.ShowLabels}" />
+          <CheckBox Content="{markup:T look_show_usage}" IsChecked="{Binding Appearance.ShowUsage}" />
+        </StackPanel>
+      </Border>
+
+      <Border Style="{StaticResource Card}">
+        <StackPanel>
+          <TextBlock Style="{StaticResource SectionTitle}" Text="{markup:T shape_title}" />
+
+          <HeaderedContentControl Style="{StaticResource FormRow}" Header="{markup:T shape_warning}">
+            <Button Style="{StaticResource ColorButton}" HorizontalAlignment="Left" Tag="WarningColor" Click="OnPickColor">
+              <Border Width="56" Height="22" CornerRadius="4"
+                      Background="{Binding Appearance.WarningColor, Converter={StaticResource HexColorBrush}, ConverterParameter={x:Static core:AppearanceSettings.DefaultWarningColor}}" />
+            </Button>
+          </HeaderedContentControl>
+
+          <HeaderedContentControl Style="{StaticResource FormRow}" Header="{markup:T shape_critical}">
+            <Button Style="{StaticResource ColorButton}" HorizontalAlignment="Left" Tag="CriticalColor" Click="OnPickColor">
+              <Border Width="56" Height="22" CornerRadius="4"
+                      Background="{Binding Appearance.CriticalColor, Converter={StaticResource HexColorBrush}, ConverterParameter={x:Static core:AppearanceSettings.DefaultCriticalColor}}" />
+            </Button>
+          </HeaderedContentControl>
+
+          <Button Content="{markup:T shape_colors_reset}" Click="OnResetColors" />
+
+          <views:SliderRow Label="{markup:T shape_corner}" Value="{Binding Appearance.CornerRadius}" TickFrequency="1" ValueFormat="{}{0:0}"
+                           Minimum="{x:Static core:AppearanceSettings.MinCornerRadius}" Maximum="{x:Static core:AppearanceSettings.MaxCornerRadius}" />
+
+          <views:SliderRow Label="{markup:T shape_spacing}" Value="{Binding Appearance.TileSpacing}" TickFrequency="1" ValueFormat="{}{0:0}"
+                           Minimum="{x:Static core:AppearanceSettings.MinTileSpacing}" Maximum="{x:Static core:AppearanceSettings.MaxTileSpacing}" />
+
+          <views:SliderRow Label="{markup:T shape_text}" Value="{Binding Appearance.TextScale}"
+                           Minimum="{x:Static core:AppearanceSettings.MinTextScale}" Maximum="{x:Static core:AppearanceSettings.MaxTextScale}" />
+
+          <views:SliderRow Label="{markup:T shape_widget_opacity}" Value="{Binding Appearance.WidgetOpacity}"
+                           Minimum="{x:Static core:AppearanceSettings.MinWidgetOpacity}" Maximum="{x:Static core:AppearanceSettings.MaxWidgetOpacity}" />
+        </StackPanel>
+      </Border>
+
+      <Border Style="{StaticResource Card}">
+        <StackPanel>
+          <TextBlock Style="{StaticResource SectionTitle}" Text="{markup:T show_title}" />
+
+          <ItemsControl x:Name="TileList">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate DataType="{x:Type vm:TileSlot}">
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                  </Grid.ColumnDefinitions>
+                  <CheckBox Content="{Binding Label}" IsChecked="{Binding IsVisible}" VerticalAlignment="Center" />
+                  <Button Grid.Column="1" Style="{StaticResource ArrowButton}" Content="↑" Command="{Binding MoveUpCommand}"
+                          ToolTip="{markup:T show_move_up}" AutomationProperties.Name="{markup:T show_move_up}" />
+                  <Button Grid.Column="2" Style="{StaticResource ArrowButton}" Content="↓" Command="{Binding MoveDownCommand}"
+                          ToolTip="{markup:T show_move_down}" AutomationProperties.Name="{markup:T show_move_down}" />
+                </Grid>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+          <TextBlock Style="{StaticResource Hint}" Text="{markup:T show_order_hint}" />
+
+          <!-- Only shown once the sensors have found disks, and only usable while Disks above is on:
+               switching all disks off hides every disk whatever is ticked here. -->
+          <StackPanel Margin="0,10,0,0" IsEnabled="{Binding Tiles.Disks}">
+            <StackPanel.Style>
+              <Style TargetType="StackPanel">
+                <Setter Property="Visibility" Value="Collapsed" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding HasItems, ElementName=DiskList}" Value="True">
+                    <Setter Property="Visibility" Value="Visible" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </StackPanel.Style>
+            <TextBlock Style="{StaticResource FieldLabel}" FontWeight="SemiBold" Text="{markup:T show_disks_list}" />
+            <ItemsControl x:Name="DiskList">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type vm:DiskSlot}">
+                  <CheckBox Content="{Binding Label}" IsChecked="{Binding IsVisible}" Margin="12,3,0,3" />
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <TextBlock x:Name="DisksOffHint" Text="{markup:T show_disks_off_hint}">
+              <TextBlock.Style>
+                <Style TargetType="TextBlock" BasedOn="{StaticResource Hint}">
+                  <Setter Property="Visibility" Value="Collapsed" />
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding Tiles.Disks}" Value="False">
+                      <Setter Property="Visibility" Value="Visible" />
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+          </StackPanel>
+
+          <TextBlock Style="{StaticResource Hint}" Margin="0,10,0,0" Text="{markup:T show_fps_hint}" />
+        </StackPanel>
+      </Border>
+
+      <Border Style="{StaticResource Card}">
+        <StackPanel>
+          <TextBlock Style="{StaticResource SectionTitle}" Text="{markup:T pos_title}" />
+          <CheckBox Content="{markup:T pos_on_top}" IsChecked="{Binding AlwaysOnTop}" />
+          <TextBlock Style="{StaticResource Intro}" Text="{markup:T pos_on_top_hint}" />
+          <!-- Two by two, so the buttons line up whatever the length of the translations. -->
+          <UniformGrid Columns="2">
+            <Button HorizontalAlignment="Stretch" Content="{markup:T pos_top_left}" Tag="{x:Static layout:ScreenCorner.TopLeft}" Click="OnSnap" />
+            <Button HorizontalAlignment="Stretch" Content="{markup:T pos_top_right}" Tag="{x:Static layout:ScreenCorner.TopRight}" Click="OnSnap" />
+            <Button HorizontalAlignment="Stretch" Content="{markup:T pos_bottom_left}" Tag="{x:Static layout:ScreenCorner.BottomLeft}" Click="OnSnap" />
+            <Button HorizontalAlignment="Stretch" Content="{markup:T pos_bottom_right}" Tag="{x:Static layout:ScreenCorner.BottomRight}" Click="OnSnap" />
+          </UniformGrid>
+          <Button Content="{markup:T pos_edit}" Click="OnToggleEditMode" />
+          <TextBlock Style="{StaticResource Hint}" Text="{markup:T pos_hint}" />
+        </StackPanel>
+      </Border>
+
+      <Border Style="{StaticResource Card}">
+        <StackPanel>
+          <TextBlock Style="{StaticResource SectionTitle}" Text="{markup:T alert_title}" />
+          <TextBlock Style="{StaticResource Intro}" Text="{markup:T alert_intro}" />
+          <CheckBox Content="{markup:T alert_device_limits}" IsChecked="{Binding Alerts.UseDeviceLimits}" />
+          <TextBlock Style="{StaticResource Intro}" Text="{markup:T alert_device_hint}" />
+
+          <Grid Margin="0,0,0,4">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="{StaticResource LimitNameColumn}" />
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="{StaticResource LimitValueColumn}" />
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="{StaticResource LimitValueColumn}" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource WarningHeader}" Text="{markup:T alert_yellow}" />
+            <TextBlock Grid.Column="3" Grid.ColumnSpan="2" Style="{StaticResource CriticalHeader}" Text="{markup:T alert_red}" />
+          </Grid>
+
+          <views:AlertLimitRow Label="CPU" DataContext="{Binding Alerts.Cpu}" />
+          <views:AlertLimitRow Label="GPU" DataContext="{Binding Alerts.Gpu}" />
+          <views:AlertLimitRow Label="VRAM" DataContext="{Binding Alerts.Vram}" />
+          <views:AlertLimitRow Label="RAM" DataContext="{Binding Alerts.Memory}" />
+          <views:AlertLimitRow Label="{markup:T metric_disk}" DataContext="{Binding Alerts.Disk}" />
+
+          <Button Content="{markup:T alert_reset}" Margin="0,10,0,0" Click="OnResetLimits" />
+        </StackPanel>
+      </Border>
+
+      <Border Style="{StaticResource Card}">
+        <StackPanel>
+          <TextBlock Style="{StaticResource SectionTitle}" Text="{markup:T status_title}" />
+          <TextBlock x:Name="StatusText" TextWrapping="Wrap" />
+          <WrapPanel Margin="0,12,0,0">
+            <Button Content="{markup:T status_diag}" Click="OnSaveDiagnostics" />
+            <Button Content="{markup:T status_demo}" Click="OnToggleDemo" />
+          </WrapPanel>
+        </StackPanel>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
+</Window>

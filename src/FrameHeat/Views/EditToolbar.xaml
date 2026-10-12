@@ -1,0 +1,18 @@
+<UserControl x:Class="FrameHeat.Views.EditToolbar"
+             x:ClassModifier="internal"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:markup="clr-namespace:FrameHeat.Markup">
+
+  <!-- Drawn on its own dark card so it stays readable on light backgrounds and without a panel. -->
+  <Border Margin="3,4,3,2" Padding="10,8,10,10" CornerRadius="12" HorizontalAlignment="Left" BorderThickness="1"
+          Background="{StaticResource ToolbarBackgroundBrush}" BorderBrush="{StaticResource ToolbarBorderBrush}"
+          Style="{StaticResource VisibleWhenEditing}">
+    <StackPanel>
+      <TextBlock Style="{StaticResource ToolbarHint}" Text="{markup:T overlay_edit_hint}" />
+      <Button Style="{StaticResource ToolbarButton}" Content="{markup:T overlay_btn_orientation}" Command="{Binding ToggleOrientationCommand}" />
+      <Button Style="{StaticResource ToolbarButton}" Content="{markup:T overlay_btn_settings}" Command="{Binding OpenSettingsCommand}" />
+      <Button Style="{StaticResource ToolbarButton}" Content="{markup:T overlay_btn_done}" Command="{Binding EndEditCommand}" />
+    </StackPanel>
+  </Border>
+</UserControl>

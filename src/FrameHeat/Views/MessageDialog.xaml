@@ -1,0 +1,21 @@
+<Window x:Class="FrameHeat.Views.MessageDialog"
+        x:ClassModifier="internal"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:core="clr-namespace:FrameHeat.Core;assembly=FrameHeat.Core"
+        Title="{x:Static core:AppIdentity.Name}"
+        Width="440" SizeToContent="Height" ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen" ShowInTaskbar="False" Topmost="True">
+
+  <Window.Resources>
+    <ResourceDictionary Source="/FrameHeat;component/Themes/WindowControls.xaml" />
+  </Window.Resources>
+
+  <StackPanel Margin="24,22,24,16">
+    <TextBlock x:Name="MessageText" Style="{StaticResource DialogMessage}" />
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,22,0,0">
+      <Button x:Name="ConfirmButton" IsDefault="True" Click="OnConfirm" />
+      <Button x:Name="DeclineButton" IsCancel="True" Click="OnDecline" />
+    </StackPanel>
+  </StackPanel>
+</Window>

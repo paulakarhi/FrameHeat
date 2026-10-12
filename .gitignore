@@ -1,0 +1,8 @@
+bin/
+obj/
+dist/
+dist-installer/
+installer/redist/*.exe
+.vs/
+*.user
+*.suo
