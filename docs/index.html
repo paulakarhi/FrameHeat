@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FrameHeat: FPS counter and hardware monitor for Windows 11</title>
+  <meta name="description" content="A small, free FPS counter and hardware monitor for Windows 11. Shows CPU, GPU, VRAM, RAM and disk temperatures, the frame rate of your game, network speed and ping in a click-through overlay.">
+  <link rel="canonical" href="https://paulakarhi.github.io/FrameHeat/">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="FrameHeat: FPS counter and hardware monitor for Windows 11">
+  <meta property="og:description" content="Temperatures, frame rate, network speed and ping in a click-through overlay. Free and open source.">
+  <meta property="og:url" content="https://paulakarhi.github.io/FrameHeat/">
+  <meta property="og:image" content="https://paulakarhi.github.io/FrameHeat/images/widget-gauge.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <h1>FrameHeat</h1>
+      <p class="lead">A small, free FPS counter and hardware monitor for Windows 11. Temperatures, frame rate, network speed and ping in a panel that stays on top of your game.</p>
+      <p>
+        <a class="button" href="https://github.com/paulakarhi/FrameHeat/releases/latest">Download the latest release</a>
+      </p>
+      <p class="note">Windows 11, 64-bit. Free and open source (MIT).</p>
+      <img class="shot" src="images/demo.gif" width="1000" height="194" alt="The widget in demo mode: the readings climb through the yellow and red alert levels while the frame rate changes">
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section>
+      <h2>What it shows</h2>
+      <ul class="cards">
+        <li>
+          <h3>Temperatures and load</h3>
+          <p>CPU, graphics card, video memory, RAM and every disk, as a temperature and a load or fill level.</p>
+        </li>
+        <li>
+          <h3>Frame rate</h3>
+          <p>FPS of the game in front, the time between frames, the one percent low and the refresh rate of your monitor. Nothing is injected into the game.</p>
+        </li>
+        <li>
+          <h3>Network</h3>
+          <p>Download and upload speed with the highest download seen, and ping to an address you choose. Both are off until you switch them on.</p>
+        </li>
+        <li>
+          <h3>Alerts</h3>
+          <p>A reading turns yellow as the temperature nears its limit and pulses red once the limit is passed. The limits and colors are yours to change.</p>
+        </li>
+        <li>
+          <h3>Your look</h3>
+          <p>Ring gauges, compact tiles or one line of text per device. Size, colors, opacity and the boxes around the tiles are all adjustable.</p>
+        </li>
+        <li>
+          <h3>Out of the way</h3>
+          <p>Always on top, never takes focus and clicks pass through to the game. Hotkeys work in games and ten languages are included.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Looks</h2>
+      <div class="gallery">
+        <figure>
+          <img src="images/widget-gauge.png" width="1055" height="206" loading="lazy" alt="The widget with ring gauges for CPU, GPU, VRAM, RAM, two disks, frame rate, network and ping">
+          <figcaption>Ring gauges, the default design</figcaption>
+        </figure>
+        <figure>
+          <img src="images/widget-no-boxes.png" width="1055" height="206" loading="lazy" alt="The widget without boxes or background: only the gauges and numbers, with a yellow CPU and RAM and a red GPU and disk">
+          <figcaption>Without boxes and background, an alert still colors the reading</figcaption>
+        </figure>
+        <figure>
+          <img src="images/widget-compact.png" width="1055" height="165" loading="lazy" alt="The widget in the compact design">
+          <figcaption>Compact tiles</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="faq">
+      <h2>Questions</h2>
+
+      <details>
+        <summary>Does it work in my game?</summary>
+        <p>The frame rate works for games that present their frames through DXGI, which includes DirectX 10, 11 and 12 games. It has been tried with Fortnite. Vulkan and OpenGL games have not been tried, and an ordinary window does not show over old games in true exclusive fullscreen; borderless windows work. Games that are known to work, and those that do not, are collected in <a href="https://github.com/paulakarhi/FrameHeat/discussions/2">a discussion</a>. Please add yours.</p>
+      </details>
+
+      <details>
+        <summary>Why does Windows warn me about the installer?</summary>
+        <p>The installer is not code-signed yet, so Windows SmartScreen may show a warning. Choose "More info" and then "Run anyway". The installer is built from the source in the repository, and the SHA-256 of every release is in its release notes, so you can check the file you downloaded.</p>
+      </details>
+
+      <details>
+        <summary>Why does it need administrator rights?</summary>
+        <p>The CPU, memory and disk sensors and the frame rate cannot be read without them. The installer also installs the PawnIO driver, which is how Windows exposes CPU and memory temperatures.</p>
+      </details>
+
+      <details>
+        <summary>Is it safe to use with anti-cheat?</summary>
+        <p>FrameHeat does not touch the game, but any program that uses a kernel driver can draw attention in some games' anti-cheat. It has been run alongside Fortnite (Easy Anti-Cheat) and no other game, so the risk in other games is unknown.</p>
+      </details>
+
+      <details>
+        <summary>Does it collect any data?</summary>
+        <p>No. It makes no network connections, with one exception that is off until you switch it on: the ping tile sends a small test message to the address you choose once a second. The settings and a log stay on your computer.</p>
+      </details>
+
+      <details>
+        <summary>Is it free?</summary>
+        <p>Yes. FrameHeat is free and open source under the MIT license. The source, the build instructions and the full list of limitations are in the <a href="https://github.com/paulakarhi/FrameHeat#readme">README</a>.</p>
+      </details>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    <p>
+      <a href="https://github.com/paulakarhi/FrameHeat">Source on GitHub</a> ·
+      <a href="https://github.com/paulakarhi/FrameHeat/issues/new/choose">Report a problem</a> ·
+      <a href="https://github.com/paulakarhi/FrameHeat/discussions">Discussions</a> ·
+      <a href="https://github.com/paulakarhi/FrameHeat/blob/main/LICENSE">MIT license</a>
+    </p>
+  </footer>
+</body>
+</html>

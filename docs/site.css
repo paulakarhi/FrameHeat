@@ -1,0 +1,159 @@
+:root {
+  color-scheme: dark;
+  --background: #0b0e15;
+  --surface: #151b26;
+  --surface-border: #263042;
+  --text: #f3f6fb;
+  --text-muted: #9aa8bb;
+  --accent: #4cc9f0;
+  --accent-text: #06202b;
+  --radius: 14px;
+  --gutter: 16px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(180deg, #1b222e 0, var(--background) 520px) no-repeat, var(--background);
+  color: var(--text);
+  font: 16px/1.6 "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+.wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+a {
+  color: var(--accent);
+}
+
+a:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.hero {
+  padding: 56px 0 24px;
+  text-align: center;
+}
+
+h1 {
+  margin: 0 0 12px;
+  font-size: clamp(2.4rem, 7vw, 3.6rem);
+  line-height: 1.1;
+}
+
+.lead {
+  max-width: 640px;
+  margin: 0 auto 24px;
+  color: var(--text-muted);
+  font-size: 1.15rem;
+}
+
+.button {
+  display: inline-block;
+  padding: 12px 26px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.button:hover {
+  filter: brightness(1.1);
+}
+
+.note {
+  margin: 8px 0 32px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.shot,
+.gallery img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+}
+
+h2 {
+  margin: 56px 0 20px;
+  font-size: 1.7rem;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cards li,
+details {
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.cards li {
+  padding: 18px 20px;
+}
+
+h3 {
+  margin: 0 0 6px;
+  font-size: 1.1rem;
+}
+
+.cards p {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.gallery {
+  display: grid;
+  gap: 24px;
+  margin: 0;
+}
+
+figure {
+  margin: 0;
+}
+
+figcaption {
+  margin-top: 8px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+details {
+  margin-bottom: 12px;
+  padding: 14px 20px;
+}
+
+summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+details p {
+  margin: 12px 0 0;
+  color: var(--text-muted);
+}
+
+footer {
+  margin-top: 64px;
+  padding-bottom: 48px;
+  color: var(--text-muted);
+  text-align: center;
+}
