@@ -181,8 +181,8 @@ new user interface, not new core logic.
 - **Exclusive fullscreen.** An ordinary window does not show over old games in true exclusive fullscreen. Borderless
   windows and the Windows 11 fullscreen optimizations work. Injection-based overlays are deliberately not used,
   because they interfere with anti-cheat.
-- **Anti-cheat.** Any program that uses a kernel driver can draw attention in some games' anti-cheat. This has not
-  been tested in any game.
+- **Anti-cheat.** Any program that uses a kernel driver can draw attention in some games' anti-cheat. FrameHeat has
+  been run alongside Fortnite (Easy Anti-Cheat) and no other game, so the risk in other games is unknown.
 - **RAM temperature.** The memory module sensor (the DDR5 SPD hub) exists on only some machines. Without it the RAM
   tile shows usage only.
 - The window adds one compositing layer between the game and the desktop (DWM). Added latency has not been measured.
