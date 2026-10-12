@@ -1,9 +1,12 @@
 # FrameHeat
 
-A small, self-contained hardware widget for Windows 11. It shows the temperature and load of the CPU, graphics
-card, video memory, RAM and every disk, together with the frame rate of the game you are playing, in a panel that
-stays on top of games and other windows. A reading turns yellow as the temperature nears its limit and pulses red
-once the limit is passed.
+[![Latest release](https://img.shields.io/github/v/release/paulakarhi/FrameHeat)](https://github.com/paulakarhi/FrameHeat/releases/latest)
+[![License](https://img.shields.io/github/license/paulakarhi/FrameHeat)](LICENSE)
+
+A small, free FPS counter and hardware monitor for Windows 11. It shows the temperature and load of the CPU,
+graphics card, video memory, RAM and every disk, together with the frame rate of the game you are playing, in a panel
+that stays on top of games and other windows. A reading turns yellow as the temperature nears its limit and pulses
+red once the limit is passed.
 
 Nothing else has to be installed or configured: no HWiNFO, no MSI Afterburner, no RTSS. The defaults work as
 they are; the settings window only adjusts the look.

@@ -1,0 +1,38 @@
+name: Bug report
+description: Something does not work, or a value looks wrong
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you expect, and what did you see instead?
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: FrameHeat version
+      placeholder: "0.1.0"
+    validations:
+      required: true
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version
+      placeholder: "Windows 11 24H2"
+  - type: input
+    id: hardware
+    attributes:
+      label: Graphics card and processor
+  - type: input
+    id: game
+    attributes:
+      label: Game and display mode
+      description: For frame rate problems. Fullscreen, borderless or windowed.
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Diagnostics report
+      description: In the settings window press "Save diagnostics" and paste the file here. It lists the hardware and sensors found.
+      render: text
