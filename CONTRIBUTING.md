@@ -2,6 +2,8 @@
 
 Bug reports, ideas and pull requests are welcome.
 
+Everyone taking part is expected to follow the [code of conduct](CODE_OF_CONDUCT.md).
+
 ## Reporting a problem
 
 Open an issue and tell which Windows version, graphics card and processor you have. The easiest way to give the
